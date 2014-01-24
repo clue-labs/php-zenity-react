@@ -185,6 +185,22 @@ class Builder
         return $zenity;
     }
 
+    public function listValues($list, $text = nul)
+    {
+        $zenity = new Listing($this->launcher);
+        $zenity->addColumn('Value');
+        $zenity->setHideHeader(true);
+        $zenity->setText($text);
+
+        // $zenity->run();
+
+        foreach ($list as $value) {
+            $zenity->writeLine($value);
+        }
+
+        return $zenity;
+    }
+
     public function listRadio($list, $text = null, $selected = null)
     {
         $zenity = new Listing($this->launcher);
