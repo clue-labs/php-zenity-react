@@ -2,9 +2,9 @@
 
 namespace Clue\Zenity\React\Dialog;
 
-use Clue\Zenity\React\Zenity;
+use Clue\Zenity\React\Dialog\AbstractDialog;
 
-class Question extends Zenity
+class Question extends AbstractDialog
 {
     protected $text;
 

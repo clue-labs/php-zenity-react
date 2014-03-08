@@ -2,9 +2,9 @@
 
 namespace Clue\Zenity\React\Dialog;
 
-use Clue\Zenity\React\Zenity;
+use Clue\Zenity\React\Dialog\AbstractDialog;
 
-class Calendar extends Zenity
+class Calendar extends AbstractDialog
 {
     protected $text;
     protected $year;

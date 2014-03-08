@@ -2,9 +2,9 @@
 
 namespace Clue\Zenity\React\Dialog;
 
-use Clue\Zenity\React\Zenity;
+use Clue\Zenity\React\Dialog\AbstractDialog;
 
-class ColorSelection extends Zenity
+class ColorSelection extends AbstractDialog
 {
     protected $color;
     protected $showPalette = false;

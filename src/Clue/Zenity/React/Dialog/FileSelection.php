@@ -2,9 +2,9 @@
 
 namespace Clue\Zenity\React\Dialog;
 
-use Clue\Zenity\React\Zenity;
+use Clue\Zenity\React\Dialog\AbstractDialog;
 
-class FileSelection extends Zenity
+class FileSelection extends AbstractDialog
 {
     protected $filename;
     protected $multiple = false;
