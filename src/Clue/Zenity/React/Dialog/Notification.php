@@ -1,6 +1,6 @@
 <?php
 
-namespace Clue\Zenity\React\Model;
+namespace Clue\Zenity\React\Dialog;
 
 use Clue\Zenity\React\Zenity;
 

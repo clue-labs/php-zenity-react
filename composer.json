@@ -12,7 +12,7 @@
     ],
     "require": {
         "react/promise": "~1",
-        "icecave/mephisto": "0.1.*"
+        "clue/child-process-react": "dev-master"
     },
     "autoload": {
         "psr-0": { "Clue\\Zenity\\React": "src/" }
