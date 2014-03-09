@@ -35,14 +35,14 @@ class TextInfo extends AbstractDialog
 
     public function setText($text)
     {
-        $this->writeln($text);
+        $this->inbuffer = $text;
 
         return $this;
     }
 
-    public function writeLine($line)
+    public function addLine($line)
     {
-        $this->writeln($line);
+        $this->inbuffer .= $line . PHP_EOL;
 
         return $this;
     }
