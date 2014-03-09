@@ -3,6 +3,7 @@
 namespace Clue\Zenity\React\Dialog;
 
 use Clue\Zenity\React\Dialog\AbstractDialog;
+use Clue\Zenity\React\Zen\ProgressZen;
 
 class Progress extends AbstractDialog
 {
@@ -19,16 +20,12 @@ class Progress extends AbstractDialog
     {
         $this->text = $text;
 
-        $this->writeln('#' . $text);
-
         return $this;
     }
 
     public function setPercentage($percentage)
     {
         $this->percentage = $percentage;
-
-        $this->writeln($percentage);
 
         return $this;
     }
@@ -54,22 +51,8 @@ class Progress extends AbstractDialog
         return $this;
     }
 
-    public function advance($by)
+    protected function createZen($deferred, $process)
     {
-        $this->setPercentage($this->percentage + $by);
-
-        return $this;
-    }
-
-    public function complete()
-    {
-        $this->setPercentage(100);
-
-        return $this;
-    }
-
-    public function getPercentage()
-    {
-        return $this->percentage;
+        return new ProgressZen($deferred, $process, $this->percentage);
     }
 }
