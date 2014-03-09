@@ -6,6 +6,8 @@ use React\EventLoop\LoopInterface;
 use Icecave\Mephisto\Factory\ProcessFactory;
 use Icecave\Mephisto\Launcher\CommandLineLauncher;
 use Icecave\Mephisto\Process\ProcessInterface;
+use Clue\Zenity\React\Dialog\DialogInterface;
+use Clue\Zenity\React\Dialog\AbstractDialog;
 
 /**
  *
@@ -36,7 +38,12 @@ class Launcher
         return $this;
     }
 
-    public function run(array $args = array())
+    public function createProcess(AbstractDialog $dialog)
+    {
+        return $this->run($dialog->getArgs());
+    }
+
+    private function run(array $args = array())
     {
         $command = $this->bin;
 
@@ -53,40 +60,5 @@ class Launcher
         $process = $this->processLauncher->runCommandLine($command);
         /* @var $process ProcessInterface */
         return $process;
-    }
-
-    /**
-     * Block while waiting for $zenity dialog to return
-     *
-     * This method should not be called manually! Use AbstractDialog::waitReturn() instead!
-     *
-     * @param AbstractDialog $zenity
-     * @return unknown
-     * @private
-     * @see AbstractDialog::waitReturn() instead
-     */
-    public function waitFor(AbstractDialog $zenity)
-    {
-        $done = false;
-        $ret  = null;
-        $loop = $this->loop;
-
-        $zenity->then(function ($result) use (&$ret, &$done, $loop) {
-            $ret = $result;
-            $done = true;
-
-            $loop->stop();
-        }, function () use (&$ret, &$done, $loop) {
-            $ret = false;
-            $done = true;
-
-            $loop->stop();
-        });
-
-        if (!$done) {
-            $loop->run();
-        }
-
-        return $ret;
     }
 }

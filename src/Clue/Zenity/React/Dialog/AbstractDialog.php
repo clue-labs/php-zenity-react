@@ -5,13 +5,13 @@ namespace Clue\Zenity\React\Dialog;
 use Clue\Zenity\React\Launcher;
 use React\Promise\PromiseInterface;
 use React\Promise\Deferred;
+use Icecave\Mephisto\Process\ProcessInterface;
+use Clue\Zenity\React\Zen\BaseZen;
 
-abstract class AbstractDialog implements PromiseInterface
+abstract class AbstractDialog
 {
     private $launcher;
-    private $deferred;
-    private $inbuffer;
-    protected $process;
+    private $inbuffer = null;
 
     protected $title;
     protected $windowIcon;
@@ -25,7 +25,6 @@ abstract class AbstractDialog implements PromiseInterface
     public function __construct(Launcher $launcher)
     {
         $this->launcher = $launcher;
-        $this->deferred = new Deferred();
     }
 
     public function setTitle($title)
@@ -84,20 +83,42 @@ abstract class AbstractDialog implements PromiseInterface
         return $this;
     }
 
-    public function run()
+    protected function getType()
     {
-        if ($this->process !== null) {
-            return $this;
+        return $this->decamelize(basename(str_replace('\\', '/', get_class($this))));
+    }
+
+    public function getArgs()
+    {
+
+        $args = array(
+            '--' . $this->getType()
+        );
+
+        foreach ($this as $name => $value) {
+            if (!in_array($name, array('inbuffer', 'launcher')) && $value !== null && $value !== false && !is_array($value)) {
+                $name = $this->decamelize($name);
+
+                if ($name === true) {
+                    $args[] = $value;
+                } else {
+                    $args[$name] = $value;
+                }
+            }
         }
 
-        $args = $this->getArgs();
+        return $args;
+    }
 
-        $this->process = $process = $this->launcher->run($args);
+    public function launch()
+    {
+        $process = $this->launcher->createProcess($this);
 
         if ($this->inbuffer !== null) {
             $process->inputStream()->write($this->inbuffer);
-            $this->inbuffer = null;
         }
+
+        $deferred = new Deferred();
 
         $result = null;
         $process->outputStream()->on('data', function ($data) use (&$result) {
@@ -106,9 +127,11 @@ abstract class AbstractDialog implements PromiseInterface
             }
         });
 
-        $deferred = $this->deferred;
         $that = $this;
-        $process->outputStream()->on('end', function() use ($process, &$result, $that, $deferred) {
+
+        $zen = $this->createZen($deferred, $process);
+
+        $process->outputStream()->on('end', function() use ($process, $zen, &$result, $that, $deferred) {
             $code = $process->status()->exitCode();
             if ($code !== 0) {
                 $deferred->reject($code);
@@ -116,15 +139,15 @@ abstract class AbstractDialog implements PromiseInterface
                 if ($result === null) {
                     $result = true;
                 } else {
-                    $result = $this->parseValue(trim($result));
+                    $result = $that->parseValue(trim($result));
                 }
                 $deferred->resolve($result);
             }
 
-            $that->close();
+            $zen->close();
         });
 
-        return $this;
+        return $zen;
     }
 
     /**
@@ -147,36 +170,31 @@ abstract class AbstractDialog implements PromiseInterface
      * @return boolean|string dialog return value
      * @uses Launcher::waitFor()
      */
-    public function waitReturn()
+    public function waitFor()
     {
-        return $this->launcher->waitFor($this);
-    }
+        $done = false;
+        $ret  = null;
+        $loop = $this->loop;
 
-    public function getType()
-    {
-        return $this->decamelize(basename(str_replace('\\', '/', get_class($this))));
-    }
+        $process = $this->launch();
 
-    public function getArgs()
-    {
+        $process->then(function ($result) use (&$ret, &$done, $loop) {
+            $ret = $result;
+            $done = true;
 
-        $args = array(
-            '--' . $this->getType()
-        );
+            $loop->stop();
+        }, function () use (&$ret, &$done, $loop) {
+            $ret = false;
+            $done = true;
 
-        foreach ($this as $name => $value) {
-            if (!in_array($name, array('deferred', 'result', 'process', 'launcher', 'inbuffer')) && $value !== null && $value !== false && !is_array($value)) {
-                $name = $this->decamelize($name);
+            $loop->stop();
+        });
 
-                if ($name === true) {
-                    $args[] = $value;
-                } else {
-                    $args[$name] = $value;
-                }
-            }
+        if (!$done) {
+            $loop->run();
         }
 
-        return $args;
+        return $ret;
     }
 
     protected function decamelize($name)
@@ -189,39 +207,14 @@ abstract class AbstractDialog implements PromiseInterface
         return $value;
     }
 
-    public function then($fulfilledHandler = null, $errorHandler = null, $progressHandler = null)
+    protected function createZen(Deferred $deferred, ProcessInterface $process)
     {
-        if ($this->process === null) {
-            $this->run();
-        }
-        return $this->deferred->then($fulfilledHandler, $errorHandler, $progressHandler);
-    }
-
-    public function close()
-    {
-        if ($this->process !== null) {
-            $this->process->kill();
-
-            $streams = array($this->process->outputStream(), $this->process->inputStream(), $this->process->errorStream());
-            foreach ($streams as $stream) {
-                if ($stream !== null) {
-                    $stream->close();
-                }
-            }
-
-            // $this->process = null;
-        }
-
-        return $this;
+        return new BaseZen($deferred, $process);
     }
 
     protected function writeln($line)
     {
-        if ($this->process !== null) {
-            $this->process->inputStream()->write($line . PHP_EOL);
-        } else {
-            // process not yet started => buffer input stream temporarily
-            $this->inbuffer .= $line . PHP_EOL;
-        }
+        // buffer input stream temporarily
+        $this->inbuffer .= $line . PHP_EOL;
     }
 }
