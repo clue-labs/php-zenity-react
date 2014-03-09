@@ -131,9 +131,7 @@ class Builder
 
     public function notifier()
     {
-        $zenity = new Notification($this->launcher);
-        $zenity->setListen(true);
-        $zenity->run();
+        $zenity = new Notifier($this->launcher);
 
         return $zenity;
     }
