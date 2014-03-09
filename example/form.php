@@ -21,9 +21,7 @@ $form->addCalendar('Birthday');
 $form->addEntry('Nickname');
 $form->addList('Gender', array('Male', 10, 'Female', 0), array('Gender', 'Number'));
 
-$form->run();
-
-$form->then(function($result) {
+$form->launch()->then(function($result) {
     var_dump('result', $result);
 }, function() {
     var_dump('form canceled');
