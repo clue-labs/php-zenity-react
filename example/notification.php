@@ -12,12 +12,15 @@ $loop = Factory::create();
 $launcher = new Launcher($loop);
 $builder = new Builder($launcher);
 
-$notification = $builder->notifier();
-$notification->setMessage('Hello world');
+$notification = $builder->notifier()->launch();
+$notification->sendNotification('Hello world');
 
 $n = 0;
 $loop->addPeriodicTimer(10.0, function ($timer) use ($notification, &$n) {
-    $notification->setMessage('Hi' . ++$n);
+    $icons = array(null, 'error', 'info', 'warning');
+    shuffle($icons);
+
+    $notification->sendNotification('Hi' . ++$n, reset($icons));
 });
 
 

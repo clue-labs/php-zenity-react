@@ -1,6 +1,11 @@
 <?php
 
-class Notifier implements DialogInterface
+namespace Clue\Zenity\React\Dialog;
+
+use Clue\Zenity\React\Zen\NotifierZen;
+use BadMethodCallException;
+
+class Notifier extends Notification
 {
     private $listen = true;
 
@@ -9,13 +14,13 @@ class Notifier implements DialogInterface
         return 'notification';
     }
 
-    public function launch()
+    protected function createZen($deferred, $process)
     {
-        return NotifierZen($this->launcher->createProcess($this));
+        return new NotifierZen($deferred, $process);
     }
 
     public function waitFor()
     {
-        return new \BadMethodCallException();
+        return new BadMethodCallException();
     }
 }

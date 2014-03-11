@@ -13,6 +13,7 @@ use Clue\Zenity\React\Dialog\Progress;
 use Clue\Zenity\React\Dialog\Notification;
 use Clue\Zenity\React\Dialog\TextInfo;
 use Clue\Zenity\React\Dialog\Listing;
+use Clue\Zenity\React\Dialog\Notifier;
 
 /**
  * Convenience class used to construct common zenity dialogs
