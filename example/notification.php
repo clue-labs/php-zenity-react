@@ -10,9 +10,9 @@ require __DIR__ . '/../vendor/autoload.php';
 $loop = Factory::create();
 
 $launcher = new Launcher($loop);
-$builder = new Builder($launcher);
+$builder = new Builder();
 
-$notification = $builder->notifier()->launch();
+$notification = $launcher->launch($builder->notifier());
 $notification->sendNotification('Hello world');
 
 $n = 0;

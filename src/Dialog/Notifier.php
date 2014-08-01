@@ -14,7 +14,7 @@ class Notifier extends Notification
         return 'notification';
     }
 
-    protected function createZen($deferred, $process)
+    public function createZen($deferred, $process)
     {
         return new NotifierZen($deferred, $process);
     }

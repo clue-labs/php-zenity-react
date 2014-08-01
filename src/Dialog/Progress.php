@@ -51,7 +51,7 @@ class Progress extends AbstractDialog
         return $this;
     }
 
-    protected function createZen($deferred, $process)
+    public function createZen($deferred, $process)
     {
         return new ProgressZen($deferred, $process, $this->percentage);
     }

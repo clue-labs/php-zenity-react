@@ -10,9 +10,9 @@ require __DIR__ . '/../vendor/autoload.php';
 $loop = Factory::create();
 
 $launcher = new Launcher($loop);
-$builder = new Builder($launcher);
+$builder = new Builder();
 
-$progress = $builder->pulsate('Pseudo-processing...')->launch();
+$progress = $launcher->launch($builder->pulsate('Pseudo-processing...'));
 
 $texts = array(
     'Preparing',
@@ -38,16 +38,16 @@ $timer = $loop->addPeriodicTimer(2.0, function ($timer) use ($progress, $texts) 
     }
 });
 
-$progress->then(function () use ($timer, $builder) {
+$progress->then(function () use ($timer, $builder, $launcher) {
     $timer->cancel();
 
-    $builder->info('Done')->launch();
+    $launcher->launch($builder->info('Done'));
 });
 
-$progress->then(null, function() use ($timer, $builder) {
+$progress->then(null, function() use ($timer, $builder, $launcher) {
     $timer->cancel();
 
-    $builder->error('Canceled')->launch();
+    $launcher->launch($builder->error('Canceled'));
 });
 
 $loop->run();

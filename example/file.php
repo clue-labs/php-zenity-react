@@ -11,19 +11,19 @@ require __DIR__ . '/../vendor/autoload.php';
 $loop = Factory::create();
 
 $launcher = new Launcher($loop);
-$builder = new Builder($launcher);
+$builder = new Builder();
 
-$builder->fileSelection()->launch()->then(function (SplFileInfo $file) use ($builder, $launcher) {
+$launcher->launch($builder->fileSelection())->then(function (SplFileInfo $file) use ($builder, $launcher) {
     var_dump($file);
 
-    $builder->info('Selected "' . $file->getFilename() . '". Re-opening dialog with same selection')->launch()->then(function () use ($file, $launcher) {
-        $selection = new FileSelection($launcher);
+    $launcher->launch($builder->info('Selected "' . $file->getFilename() . '". Re-opening dialog with same selection'))->then(function () use ($file, $launcher) {
+        $selection = new FileSelection();
         $selection->setFilename($file);
         $selection->setTitle('Pretend we\'re overwriting the file');
         $selection->setConfirmOverwrite(true);
         $selection->setSave(true);
 
-        $selection->launch();
+        $launcher->launch($selection);
     });
 });
 

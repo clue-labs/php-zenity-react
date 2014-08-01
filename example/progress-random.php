@@ -10,9 +10,9 @@ require __DIR__ . '/../vendor/autoload.php';
 $loop = Factory::create();
 
 $launcher = new Launcher($loop);
-$builder = new Builder($launcher);
+$builder = new Builder();
 
-$progress = $builder->progress('Pseudo-processing...')->launch();
+$progress = $launcher->launch($builder->progress('Pseudo-processing...'));
 
 $progress->setPercentage(50);
 
@@ -20,10 +20,10 @@ $timer = $loop->addPeriodicTimer(0.2, function () use ($progress) {
     $progress->advance(mt_rand(-1, 3));
 });
 
-$progress->then(function () use ($timer, $builder) {
+$progress->then(function () use ($timer, $builder, $launcher) {
     $timer->cancel();
 
-    $builder->info('Done')->launch();
+    $launcher->launch($builder->info('Done'));
 });
 
 $progress->then(null, function() use ($timer) {
