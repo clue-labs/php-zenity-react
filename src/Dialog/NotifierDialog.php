@@ -5,7 +5,7 @@ namespace Clue\React\Zenity\Dialog;
 use Clue\React\Zenity\Zen\NotifierZen;
 use BadMethodCallException;
 
-class Notifier extends Notification
+class NotifierDialog extends NotificationDialog
 {
     private $listen = true;
 

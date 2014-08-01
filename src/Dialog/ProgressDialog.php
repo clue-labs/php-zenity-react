@@ -5,7 +5,7 @@ namespace Clue\React\Zenity\Dialog;
 use Clue\React\Zenity\Dialog\AbstractDialog;
 use Clue\React\Zenity\Zen\ProgressZen;
 
-class Progress extends AbstractDialog
+class ProgressDialog extends AbstractDialog
 {
     protected $text;
     protected $percentage;

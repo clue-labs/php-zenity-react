@@ -2,7 +2,7 @@
 
 use React\EventLoop\Factory;
 use Clue\React\Zenity\Launcher;
-use Clue\React\Zenity\Dialog\FileSelection;
+use Clue\React\Zenity\Dialog\FileSelectionDialog;
 use Clue\React\Zenity\Builder;
 
 
@@ -17,7 +17,7 @@ $launcher->launch($builder->fileSelection())->then(function (SplFileInfo $file) 
     var_dump($file);
 
     $launcher->launch($builder->info('Selected "' . $file->getFilename() . '". Re-opening dialog with same selection'))->then(function () use ($file, $launcher) {
-        $selection = new FileSelection();
+        $selection = new FileSelectionDialog();
         $selection->setFilename($file);
         $selection->setTitle('Pretend we\'re overwriting the file');
         $selection->setConfirmOverwrite(true);
