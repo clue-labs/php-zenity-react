@@ -1,13 +1,13 @@
 <?php
 
-namespace Clue\Zenity\React;
+namespace Clue\React\Zenity;
 
 use React\EventLoop\LoopInterface;
 use Icecave\Mephisto\Factory\ProcessFactory;
 use Icecave\Mephisto\Launcher\CommandLineLauncher;
 use Icecave\Mephisto\Process\ProcessInterface;
-use Clue\Zenity\React\Dialog\DialogInterface;
-use Clue\Zenity\React\Dialog\AbstractDialog;
+use Clue\React\Zenity\Dialog\DialogInterface;
+use Clue\React\Zenity\Dialog\AbstractDialog;
 
 /**
  *

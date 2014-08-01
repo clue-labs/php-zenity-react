@@ -1,8 +1,8 @@
 <?php
 
-namespace Clue\Zenity\React\Zen;
+namespace Clue\React\Zenity\Zen;
 
-use Clue\Zenity\React\BaseZen;
+use Clue\React\Zenity\BaseZen;
 
 class TextInfoZen extends BaseZen
 {

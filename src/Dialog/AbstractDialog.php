@@ -1,12 +1,12 @@
 <?php
 
-namespace Clue\Zenity\React\Dialog;
+namespace Clue\React\Zenity\Dialog;
 
-use Clue\Zenity\React\Launcher;
+use Clue\React\Zenity\Launcher;
 use React\Promise\PromiseInterface;
 use React\Promise\Deferred;
 use Icecave\Mephisto\Process\ProcessInterface;
-use Clue\Zenity\React\Zen\BaseZen;
+use Clue\React\Zenity\Zen\BaseZen;
 
 abstract class AbstractDialog
 {

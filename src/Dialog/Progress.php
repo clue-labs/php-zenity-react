@@ -1,9 +1,9 @@
 <?php
 
-namespace Clue\Zenity\React\Dialog;
+namespace Clue\React\Zenity\Dialog;
 
-use Clue\Zenity\React\Dialog\AbstractDialog;
-use Clue\Zenity\React\Zen\ProgressZen;
+use Clue\React\Zenity\Dialog\AbstractDialog;
+use Clue\React\Zenity\Zen\ProgressZen;
 
 class Progress extends AbstractDialog
 {

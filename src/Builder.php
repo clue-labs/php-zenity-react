@@ -1,19 +1,19 @@
 <?php
 
-namespace Clue\Zenity\React;
+namespace Clue\React\Zenity;
 
-use Clue\Zenity\React\Launcher;
-use Clue\Zenity\React\Dialog\Question;
-use Clue\Zenity\React\Dialog\Info;
-use Clue\Zenity\React\Dialog\Warning;
-use Clue\Zenity\React\Dialog\Error;
-use Clue\Zenity\React\Dialog\Entry;
-use Clue\Zenity\React\Dialog\FileSelection;
-use Clue\Zenity\React\Dialog\Progress;
-use Clue\Zenity\React\Dialog\Notification;
-use Clue\Zenity\React\Dialog\TextInfo;
-use Clue\Zenity\React\Dialog\Listing;
-use Clue\Zenity\React\Dialog\Notifier;
+use Clue\React\Zenity\Launcher;
+use Clue\React\Zenity\Dialog\Question;
+use Clue\React\Zenity\Dialog\Info;
+use Clue\React\Zenity\Dialog\Warning;
+use Clue\React\Zenity\Dialog\Error;
+use Clue\React\Zenity\Dialog\Entry;
+use Clue\React\Zenity\Dialog\FileSelection;
+use Clue\React\Zenity\Dialog\Progress;
+use Clue\React\Zenity\Dialog\Notification;
+use Clue\React\Zenity\Dialog\TextInfo;
+use Clue\React\Zenity\Dialog\Listing;
+use Clue\React\Zenity\Dialog\Notifier;
 
 /**
  * Convenience class used to construct common zenity dialogs

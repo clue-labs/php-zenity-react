@@ -1,8 +1,8 @@
 <?php
 
-namespace Clue\Zenity\React\Dialog;
+namespace Clue\React\Zenity\Dialog;
 
-use Clue\Zenity\React\Zen\NotifierZen;
+use Clue\React\Zenity\Zen\NotifierZen;
 use BadMethodCallException;
 
 class Notifier extends Notification

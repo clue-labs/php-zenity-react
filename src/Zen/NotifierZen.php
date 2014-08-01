@@ -1,6 +1,6 @@
 <?php
 
-namespace Clue\Zenity\React\Zen;
+namespace Clue\React\Zenity\Zen;
 
 class NotifierZen extends BaseZen
 {
